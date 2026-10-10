@@ -3,7 +3,7 @@
 import { Image } from "expo-image";
 import { AlertCircleIcon, AlertTriangleIcon, CheckCircle2Icon, CheckIcon, FlagIcon, NavigationIcon } from "lucide-react-native";
 import { useState } from "react";
-import { Modal, Pressable, ScrollView, View } from "react-native";
+import { Modal, PanResponder, Pressable, ScrollView, View } from "react-native";
 import { ApiError } from "@/lib/api";
 import {
   formatDistance,
@@ -247,7 +247,7 @@ function SelectedBin({
   );
 }
 
-// Bottom sheet: up to 46% of the screen, scrolls inside
+// Bottom sheet: up to 46% of the screen, scrolls inside. Swipe the handle down (or tap it) to see more map
 export function BinSheet({
   bins,
   selected,
@@ -272,13 +272,43 @@ export function BinSheet({
   const { colors } = useTheme();
   // The map can hold hundreds after zooming out; the list keeps to the nearest
   const others = bins.filter((b) => b.id !== selected?.id).slice(0, 25);
+
+  // Picking a bin opens the sheet again
+  const [open, setOpen] = useState(true);
+  const [openFor, setOpenFor] = useState(selected?.id);
+  if (selected?.id !== openFor) {
+    setOpenFor(selected?.id);
+    if (selected) setOpen(true);
+  }
+  const [handle] = useState(() =>
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onPanResponderRelease: (_, g) => (Math.abs(g.dy) > 20 ? setOpen(g.dy < 0) : setOpen((o) => !o)),
+    })
+  );
+
   return (
     <View
       accessibilityLabel="Nearby bins"
       style={{ position: "absolute", left: 0, right: 0, bottom: 0, maxHeight: "46%", borderTopLeftRadius: 24, borderTopRightRadius: 24, backgroundColor: colors.card, boxShadow: colors.shadowSheet }}
     >
-      <View style={{ alignSelf: "center", marginTop: 10, width: 40, height: 6, borderRadius: 3, backgroundColor: colors.accent }} />
-      <ScrollView contentContainerStyle={{ padding: 20, paddingTop: 16, paddingBottom: 20 + bottomInset, gap: 20 }}>
+      <View
+        {...handle.panHandlers}
+        accessible
+        accessibilityRole="button"
+        accessibilityLabel={open ? "Hide the bin list" : "Show the bin list"}
+        aria-expanded={open}
+        onAccessibilityTap={() => setOpen((o) => !o)}
+        style={{ alignItems: "center", gap: 12, paddingTop: 10, paddingBottom: open ? 0 : 16 + bottomInset, paddingHorizontal: 20 }}
+      >
+        <View style={{ width: 40, height: 6, borderRadius: 3, backgroundColor: colors.accent }} />
+        {open ? null : (
+          <Text weight="medium" numberOfLines={1}>
+            {selected?.name ?? "Nearest bins"}
+          </Text>
+        )}
+      </View>
+      <ScrollView style={{ display: open ? "flex" : "none" }} contentContainerStyle={{ padding: 20, paddingTop: 16, paddingBottom: 20 + bottomInset, gap: 20 }}>
         {loading ? (
           <View style={{ flexDirection: "row", alignItems: "center", gap: 12, paddingVertical: 20 }}>
             <Spinner />
