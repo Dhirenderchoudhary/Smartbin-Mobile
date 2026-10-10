@@ -201,7 +201,14 @@ export default function AppMap({
     } else if (camera.points.length) {
       const bounds = new LngLatBounds();
       camera.points.forEach((p) => bounds.extend([p.lng, p.lat]));
-      m.fitBounds(bounds, { padding: camera.padding, maxZoom: camera.maxZoom ?? 16.5, duration: camera.duration ?? 600, bearing: 0, pitch: 0 });
+      // easeTo leaves its padding on the map and fitBounds adds its own on top, which squeezes the
+      // fit into a strip. Work out the fit without the old padding (no frame is drawn in between).
+      const none = { top: 0, bottom: 0, left: 0, right: 0 };
+      const old = m.getPadding();
+      m.setPadding(none);
+      const fit = m.cameraForBounds(bounds, { padding: camera.padding, maxZoom: camera.maxZoom ?? 16.5, bearing: 0 });
+      m.setPadding(old);
+      if (fit) m.easeTo({ ...fit, pitch: 0, padding: none, duration: camera.duration ?? 600 });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- only when a new command arrives
   }, [camera?.key]);
