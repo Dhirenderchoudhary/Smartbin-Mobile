@@ -12,6 +12,8 @@ The SmartBin app for people finding and adding public dustbins. It's the same de
 | Add a bin (`src/app/add.tsx`) | Move the map until the pin sits on the bin (warns about bins already within 15 m), then a photo, wet or dry, and an optional name |
 | Account (`src/app/account.tsx`) | This month's limits, light/dark/system theme, privacy policy, sign out |
 
+**For developers (and their AI):** `DESIGN.md` (the Uber Base design in React Native), `FLOWS.md` (every screen and flow), `CLAUDE.md` (stack, gotchas, rules) and `.claude/rules/aws-handoff.md` (what AWS replaces: sign-in, maps, routes).
+
 Shared code is in `src/lib` (API client, bins, walking routes, location, theme, storage), much of it copied from the web app, and `src/components` (UI pieces, the bottom sheet, navigation panels, the map).
 
 ## Run it
