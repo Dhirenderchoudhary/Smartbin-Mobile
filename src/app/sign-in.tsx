@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Logo } from "@/components/Logo";
 import { Alert, Button, Field, Input, Text } from "@/components/ui";
 import { api, type Me } from "@/lib/api";
-import { DEMO_EMAIL, signIn, signOut, signUp } from "@/lib/auth";
+import { DEMO_EMAIL, signIn, signUp } from "@/lib/auth";
 import { LOCAL_AUTH, SITE_URL } from "@/lib/config";
 import { useTheme } from "@/lib/theme";
 
@@ -29,15 +29,15 @@ export default function SignIn() {
   const passwordRef = useRef<TextInput>(null);
   const text = copy[mode];
 
-  // The layout switches to the map once the session is set
+  // The layout switches to the map once the session is set, so check the API first:
+  // otherwise a failure flashes the map, signs out and loses the error
   async function enter(e: string, p: string) {
     setError(null);
     setBusy(true);
     try {
+      if (LOCAL_AUTH) await api<Me>("/me", { token: e.trim().toLowerCase() }); // creates the account on the API
       await (mode === "signup" ? signUp : signIn)(e, p);
-      await api<Me>("/me"); // creates the account on the API and checks it can be reached
     } catch (err) {
-      await signOut();
       setError(err instanceof Error ? err.message : "Something went wrong, try again.");
       setBusy(false);
     }

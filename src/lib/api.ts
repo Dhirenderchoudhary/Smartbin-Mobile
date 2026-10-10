@@ -13,8 +13,9 @@ export class ApiError extends Error {
   }
 }
 
-export async function api<T>(path: string, init: { method?: string; body?: unknown } = {}): Promise<T> {
-  const token = await getToken();
+// token: use this instead of the saved session (checking an account before signing in)
+export async function api<T>(path: string, init: { method?: string; body?: unknown; token?: string } = {}): Promise<T> {
+  const token = init.token ?? (await getToken());
   let res: Response;
   try {
     res = await fetch(`${API_URL}${path}`, {
