@@ -29,7 +29,6 @@ export async function loadSession(): Promise<void> {
   emit();
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- Cognito will use the password
 export async function signIn(email: string, _password: string): Promise<void> {
   if (!LOCAL_AUTH) throw new Error("Cognito sign-in is not set up yet.");
   token = email.trim().toLowerCase();

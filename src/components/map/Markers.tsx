@@ -37,7 +37,7 @@ export function Pin({ type, selected, dot }: { type: BinType; selected?: boolean
 export function YouDot({ heading }: { heading: number | null }) {
   const { colors } = useTheme();
   return (
-    <View pointerEvents="none" style={{ width: 44, height: 44, alignItems: "center", justifyContent: "center" }}>
+    <View style={{ pointerEvents: "none", width: 44, height: 44, alignItems: "center", justifyContent: "center" }}>
       <View style={{ position: "absolute", width: 40, height: 40, borderRadius: 20, backgroundColor: colors.foreground, opacity: 0.12 }} />
       {heading !== null ? (
         <View style={{ position: "absolute", width: 44, height: 44, alignItems: "center", transform: [{ rotate: `${heading}deg` }] }}>

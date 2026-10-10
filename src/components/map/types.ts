@@ -7,6 +7,9 @@ export type CameraCommand =
   | { key: number; kind: "ease"; center: LatLng; zoom?: number; bearing?: number; pitch?: number; padding?: Padding; duration?: number }
   | { key: number; kind: "fit"; points: LatLng[]; padding?: Padding; maxZoom?: number; duration?: number };
 
+// A command without its key (Omit over each member, so "ease" and "fit" keep their own fields)
+export type CameraMove = CameraCommand extends infer C ? (C extends unknown ? Omit<C, "key"> : never) : never;
+
 export interface AppMapProps {
   /** Where the map opens */
   start: LatLng;

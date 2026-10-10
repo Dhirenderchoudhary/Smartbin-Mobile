@@ -168,8 +168,8 @@ export default function AppMap({
       pins.current.set(bin.id, { button, marker: new Marker({ element: root }).setLngLat([bin.longitude, bin.latitude]).addTo(m) });
     }
     for (const [id, pin] of pins.current) {
-      pin.button.style.transform = id === selectedId ? "scale(1.25)" : "";
-      pin.button.style.outline = id === selectedId ? `2px solid ${colors.foreground}` : "";
+      pin.button.style.setProperty("transform", id === selectedId ? "scale(1.25)" : "");
+      pin.button.style.setProperty("outline", id === selectedId ? `2px solid ${colors.foreground}` : "");
     }
   }, [bins, selectedId, pinStyle, colors]);
 

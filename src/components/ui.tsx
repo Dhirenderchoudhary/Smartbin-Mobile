@@ -93,7 +93,8 @@ export function Button({
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityState={{ disabled: !!off, busy }}
+      aria-disabled={!!off}
+      aria-busy={busy}
       disabled={off}
       {...props}
       style={({ pressed }) => [
@@ -149,7 +150,7 @@ export function Chips<T extends string>({
           <Pressable
             key={o.value}
             accessibilityRole="radio"
-            accessibilityState={{ checked: on }}
+            aria-checked={on}
             onPress={() => onChange(o.value)}
             style={({ pressed }) => ({
               height: 40,

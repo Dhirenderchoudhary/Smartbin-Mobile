@@ -9,7 +9,7 @@ export function LogoMark({ size = 32, color }: { size?: number; color?: string }
   const { colors } = useTheme();
   const id = useId().replace(/:/g, "");
   return (
-    <Svg width={size} height={size} viewBox="0 0 32 32" accessible={false}>
+    <Svg width={size} height={size} viewBox="0 0 32 32">
       <Defs>
         <Mask id={id}>
           <Rect width={32} height={32} fill="white" />
