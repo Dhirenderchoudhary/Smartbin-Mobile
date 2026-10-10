@@ -23,15 +23,18 @@ cp .env.example .env.local   # optional: the defaults suit local development
 
 Start the API from the Smartbin repo first (`apps/api`, port 3000, `AUTH_MODE=dev`).
 
-**The map needs a development build.** It uses MapLibre Native (`@maplibre/maplibre-react-native`), which isn't in Expo Go:
+**The map needs a development build.** It uses MapLibre Native (`@maplibre/maplibre-react-native`), which isn't in Expo Go. In Expo Go the app still runs, but the map area explains this instead of showing the map.
+
+Build it once (no Android Studio needed with EAS):
 
 ```bash
-npx expo run:android            # or run:ios, on a device or emulator
-# or in the cloud
-npx eas-cli@latest build --profile development --platform android
+npx eas-cli@latest login
+npx eas-cli@latest build --profile development --platform android   # gives a link to an .apk to install
+# or locally, with the Android SDK / Xcode installed
+npx expo run:android            # or run:ios
 ```
 
-then `npx expo start` and open the development build.
+Then `npx expo start` and open the project in the SmartBin development build (not Expo Go). Rebuild only when native dependencies change.
 
 **A phone reaches your API** on the computer running Metro (same Wi-Fi), port 3000; set `EXPO_PUBLIC_API_URL` if it's elsewhere. Photo and upload links from the API are pointed at that same host, so leaving the API's `API_PUBLIC_URL` as `localhost` is fine.
 
