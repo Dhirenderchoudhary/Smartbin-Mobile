@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Smartbin",
+    "name": "SmartBin",
     "slug": "smartbin-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -8,16 +8,18 @@
     "scheme": "smartbin",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.smartbin.app"
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#000000",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.smartbin.app"
     },
     "web": {
       "bundler": "metro",
@@ -29,9 +31,31 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#E6F4FE",
+          "backgroundColor": "#ffffff",
           "image": "./assets/splash-icon.png",
-          "imageWidth": 76
+          "imageWidth": 76,
+          "dark": {
+            "backgroundColor": "#000000"
+          }
+        }
+      ],
+      "@maplibre/maplibre-react-native",
+      "expo-secure-store",
+      "expo-web-browser",
+      "expo-font",
+      "expo-image",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "SmartBin uses your location to show the bins nearest you, guide you to one, and check you're at a bin when you report it."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "SmartBin uses the camera to take a photo of a bin you're adding to the map.",
+          "photosPermission": "SmartBin lets you choose a photo of a bin you're adding to the map.",
+          "microphonePermission": false
         }
       ]
     ],
